@@ -92,3 +92,20 @@ in this environment rewards above 200 are considered successfull.
 
 ### Breakout
 #### Training
+
+For this environment, my system did not have enough VRAM available to the jupyter kernel to store the full DQN replay buffer, with a replay buffer of 50000 it needed 10GB, so I cut it by half to allow it to run without exceptions.
+
+The training took about 4 hours to complete and none of the models seemed to learn.
+
+
+<p align="center">
+  <img src="images/output.png" width="1500">  <br>
+</p>
+
+#### Evaluation
+```
+A2C Mean reward: 0.49 +/- 0.12
+DQN Mean reward: 1.43 +/- 0.2
+```
+
+Hyperparameter tuning is supposed to matter in this environment and so it would be needed to explore better parameters for this environment in order to get the models to successfully solve the challenge.
