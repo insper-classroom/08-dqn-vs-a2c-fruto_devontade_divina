@@ -8,7 +8,6 @@ mamba activate cuda
 
 ```
 
-
 ### A2C CartPole
 
 To understand better the A2C algorithm and the best hyperparameters for it, the cartpole environment was loaded with an agent using said algorithm and the best set of parameters for it were:
@@ -18,11 +17,11 @@ model_a2c = A2C(
     policy="MlpPolicy",
     env=env,
     learning_rate=0.0007,  
-    n_steps=10,          
-    gamma=0.99,          
-    gae_lambda=1.0,    
-    ent_coef=0.0,       
-    vf_coef=0.5,         
+    n_steps=10,        
+    gamma=0.99,        
+    gae_lambda=1.0,  
+    ent_coef=0.0,     
+    vf_coef=0.5,       
     max_grad_norm=0.5,   
     device='cpu'
 )
@@ -126,3 +125,51 @@ DQN Mean reward: 1.43 +/- 0.2
 ```
 
 Hyperparameter tuning is supposed to matter in this environment and so it would be needed to explore better parameters for this environment in order to get the models to successfully solve the challenge.
+
+
+#### Training 2
+
+By changing the policy to `CNNPolicy`, and increasing the training timesteps to 1000000000, the following training graphs were obtained:
+ 
+```python
+model_dqn = DQN(
+    policy="CnnPolicy",
+    env=env,
+    learning_rate=0.00025,
+    buffer_size=100000,
+    batch_size=32,
+    gamma=0.99,
+    target_update_interval=10000,
+    exploration_fraction=0.2,
+    exploration_initial_eps=1.0,
+    exploration_final_eps=0.01,
+    learning_starts=50000,
+    device='cuda',
+)
+
+model_a2c = A2C(
+    policy="CnnPolicy",
+    env=env,
+    learning_rate=0.0007,
+    n_steps=128,
+    gamma=0.99,
+    gae_lambda=0.95,
+    ent_coef=0.01,
+    vf_coef=0.5,
+    max_grad_norm=0.5,
+    device='cuda',
+)
+```
+ 
+<p align="center">
+  <img src="images/breakout2.png" width="1500">  <br>
+</p>
+
+These are much more aligned of what was expected of such agents training in the environment, however, upon researching the environment, it seems that more common approaches require about 5M+ training timesteps.
+
+#### Evaluation
+
+```
+A2C Mean reward: 18.1 +/- 8.87
+DQN Mean reward: 22.2 +/- 8.98
+```
